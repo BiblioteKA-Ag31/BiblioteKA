@@ -9,6 +9,8 @@ class Book(models.Model):
     synopsis =models.CharField(max_length=150)
     quant_pag = models.IntegerField()
 
+    
+
 
 
 
