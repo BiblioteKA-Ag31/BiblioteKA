@@ -7,7 +7,16 @@ class LoanSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Loan
-        fields = ["id", "date_exit", "date_devolution", "returned", "user", "copies"]
+        fields = [
+            "id",
+            "date_exit",
+            "date_devolution",
+            "returned",
+            "quant_pag",
+            "user_id",
+            "copies_id"
+        ]
+
 
     def validate(self, attrs):
         if "returned" in attrs:
