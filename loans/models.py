@@ -9,8 +9,10 @@ class Loan(models.Model):
     date_devolution = models.DateField(null=True)
     returned = models.BooleanField(default=False)
     # descomentar ao criar o app copys
-    copies = models.ForeignKey("books.Copy", on_delete=models.CASCADE, related_name="loans_copies")
-    
+    copies = models.ForeignKey(
+        "books.Copy", on_delete=models.CASCADE, related_name="loans_copies"
+    )
+
     user = models.ForeignKey(
         "users.User", on_delete=models.CASCADE, related_name="loans_user"
     )
