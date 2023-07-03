@@ -3,6 +3,8 @@ from .models import Loan
 
 
 class LoanSerializer(serializers.ModelSerializer):
+    returned = serializers.BooleanField(required=False)
+
     class Meta:
         model = Loan
         fields = [
@@ -15,5 +17,12 @@ class LoanSerializer(serializers.ModelSerializer):
             "copies_id"
         ]
 
-        def create(self, validated_data):
-            return Loan.objects.create(**validated_data)
+
+    def validate(self, attrs):
+        if "returned" in attrs:
+            instance = getattr(self, "instance", None)
+            if instance and instance.returned and not attrs["returned"]:
+                raise serializers.ValidationError(
+                    "Cannot set returned to False once it's already True."
+                )
+        return attrs
