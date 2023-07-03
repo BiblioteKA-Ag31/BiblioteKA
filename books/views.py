@@ -4,7 +4,7 @@ from rest_framework import generics
 from users.models import User
 from .models import Book
 
-from .serializers import BookSerializer
+from .serializers import BookSerializer, BookDetailSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 
@@ -23,7 +23,7 @@ class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated]
 
     queryset = Book.objects.all()
-    serializer_class = BookSerializer
+    serializer_class = BookDetailSerializer
     lookup_url_kwarg = "user_id"
 
     def get_queryset(self):
