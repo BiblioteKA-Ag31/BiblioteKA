@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 from rest_framework import generics
-from .models import Book, User, Loan
+from .models import  Loan
 
 from .serializers import LoanSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -23,7 +23,7 @@ def perform_create(self, serializer):
     )
 
 
-class LoanDetailView(generics.RetrieveUpdateDestroyAPIVIEW):
+class LoanDetailView(generics.RetrieveUpdateDestroyAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
