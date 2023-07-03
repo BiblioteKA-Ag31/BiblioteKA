@@ -12,7 +12,7 @@ class LoanSerializer(serializers.ModelSerializer):
             "returned",
             "quant_pag",
             "user_id",
-            # "copy_id"
+            "copies_id"
         ]
 
         def create(self, validated_data):

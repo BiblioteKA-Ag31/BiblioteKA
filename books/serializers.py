@@ -11,7 +11,7 @@ class BookSerializer(serializers.ModelSerializer):
         def create(self, validated_data):
             return Book.objects.create_user(**validated_data)
 
-class LivroDetailSerializer(serializers.ModelSerializer):
+class BookDetailSerializer(serializers.ModelSerializer):
     books = BookSerializer(many=True)
 
     class Meta:
