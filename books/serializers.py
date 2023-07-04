@@ -5,7 +5,7 @@ from .models import Book
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-        fields = ["title", "availability", "author", "synopsis", "quant_pag"]
+        fields = ["id","title", "availability", "author", "synopsis", "quant_pag"]
 
         def create(self, validated_data):
             return Book.objects.create_user(**validated_data)
