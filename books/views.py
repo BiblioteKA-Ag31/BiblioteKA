@@ -18,7 +18,7 @@ def perform_create(self, serializer):
     return serializer.save(person=self.request.user)
 
 
-class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
+class BookDetailView(generics.RetrieveUpdateAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 

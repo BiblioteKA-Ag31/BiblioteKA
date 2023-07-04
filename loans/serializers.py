@@ -12,11 +12,9 @@ class LoanSerializer(serializers.ModelSerializer):
             "date_exit",
             "date_devolution",
             "returned",
-            "quant_pag",
-            "user_id",
-            "copies_id"
+            "user",
+            "copies",
         ]
-
 
     def validate(self, attrs):
         if "returned" in attrs:
