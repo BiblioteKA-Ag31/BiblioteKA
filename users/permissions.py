@@ -9,8 +9,11 @@ class IsCollaborator(permissions.IsAuthenticated):
 
 
 
+
 class ItsOwnAccount(permissions.BasePermission):
     def has_object_permission(self, request, view, obj): 
         if isinstance(obj, User):
             return obj == request.user
         return obj.user == request.user
+=======
+
