@@ -34,9 +34,9 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-MY_APPS = [ "users", "books", "loans"]
+MY_APPS = ["users", "books", "loans"]
 
-THIRD_PARTY_APPS = ["rest_framework" , "drf_spectacular"] 
+THIRD_PARTY_APPS = ["rest_framework", "drf_spectacular"]
 
 DJANGO_APPS = [
     "django.contrib.admin",
@@ -145,6 +145,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "users.User"
 
 SPECTACULAR_SETTINGS = {
-    "TITLE": "BandKamp", 
-    "DESCRIPTION": "Descriçao da API aqui!"
-    }
+    "TITLE": "Biblioteka",
+    "DESCRIPTION": "O objetivo dessa aplicação é gestão de uma biblioteca de livros.",
+}
