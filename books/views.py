@@ -7,15 +7,21 @@ from .models import Book
 from .serializers import BookSerializer, BookDetailSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
+from users.permissions import IsCollaborator
 
 
-class BookView(generics.ListCreateAPIView):
-    queryset = Book.objects.all()
+class BookView(generics.CreateAPIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsCollaborator]
     serializer_class = BookSerializer
 
+    def perform_create(self, serializer):
+        return serializer.save(person=self.request.user)
 
-def perform_create(self, serializer):
-    return serializer.save(person=self.request.user)
+
+class BookListView(generics.ListAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
 
 
 class BookDetailView(generics.RetrieveUpdateAPIView):
