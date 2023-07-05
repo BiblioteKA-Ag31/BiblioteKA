@@ -1,6 +1,6 @@
 from rest_framework import generics
 
-from users.permissions import ItsOwnAccount
+from users.permissions import IsCollaborator, ItsOwnAccount
 
 from .models import User
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -11,8 +11,9 @@ class UserView(generics.CreateAPIView):
     serializer_class = UserSerializer
 
 
-class UserDetailView(generics.RetrieveAPIView):
+class UserDetailsView(generics.RetrieveAPIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [ItsOwnAccount]
+    permission_classes = [IsCollaborator | ItsOwnAccount]
 
     queryset = User.objects.all()
+    serializer_class = UserSerializer
