@@ -1,6 +1,6 @@
 from rest_framework import generics
 
-from users.permissions import ItsOwnAccount
+from users.permissions import IsCollaborator, ItsOwnAccount
 
 from .models import User
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -15,9 +15,9 @@ class UserView(generics.CreateAPIView):
     serializer_class = UserSerializer
 
 
-class UserDetailView(generics.RetrieveAPIView):
+class UserDetailsView(generics.RetrieveAPIView):
     authentication_classes = [JWTAuthentication]
-    permission_classes = [ItsOwnAccount]
+    permission_classes = [IsCollaborator | ItsOwnAccount]
 
     queryset = User.objects.all()
 
@@ -32,3 +32,4 @@ class UserBookView(generics.CreateAPIView):
         print(user_instance)
         book_instance = get_object_or_404(Book, pk=self.request.data["book_id"])
         serializer.save(user=user_instance, book=book_instance)
+
