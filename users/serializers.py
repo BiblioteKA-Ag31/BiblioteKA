@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User
+from .models import User, UserBook
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -27,4 +27,10 @@ class UserBookSerializer(serializers.Serializer):
     book_id = serializers.IntegerField()
 
     def create(self, validated_data):
-        return super().create(validated_data)
+        return UserBook.objects.create(**validated_data)
+
+
+class SendEmailSerializer(serializers.Serializer):
+    subject = serializers.CharField()
+    message = serializers.CharField()
+    recipient_list = serializers.ListField()
