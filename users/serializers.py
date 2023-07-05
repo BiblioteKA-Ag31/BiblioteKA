@@ -19,3 +19,12 @@ class UserSerializer(serializers.ModelSerializer):
             **validated_data
             | {"is_superuser": validated_data.get("is_superuser", False)}
         )
+
+
+class UserBookSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    user_id = serializers.IntegerField()
+    book_id = serializers.IntegerField()
+
+    def create(self, validated_data):
+        return super().create(validated_data)
