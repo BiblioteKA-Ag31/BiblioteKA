@@ -37,6 +37,8 @@ class UserBookView(generics.CreateAPIView):
         book_instance = get_object_or_404(Book, pk=self.request.data["book_id"])
         serializer.save(user=user_instance, book=book_instance)
 
+    
+
 class SendEmailView(APIView):
     def post(self, request):
         serialize = SendEmailSerializer(data=request.data)
