@@ -37,6 +37,8 @@ class UserBookView(generics.CreateAPIView):
         serializer.save(user=user, book=book_instance)
 
 
+    
+
 class SendEmailView(APIView):
     def post(self, request):
         serialize = SendEmailSerializer(data=request.data)
