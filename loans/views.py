@@ -5,13 +5,19 @@ from .serializers import LoanSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from users.permissions import IsCollaborator
+
 from loans.permissions import HasRented
 from users.models import User
 
 
+
 class LoanView(generics.CreateAPIView):
     authentication_classes = [JWTAuthentication]
+
+    permission_classes = [IsCollaborator]
+
     permission_classes = [IsCollaborator, HasRented]
+
     queryset = Loan.objects.all()
     serializer_class = LoanSerializer
 
