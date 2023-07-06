@@ -14,9 +14,10 @@ class BookView(generics.CreateAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsCollaborator]
     serializer_class = BookSerializer
+    queryset = Book.objects.all()
 
     def perform_create(self, serializer):
-        return serializer.save(person=self.request.user)
+        return serializer.save()
 
 
 class BookListView(generics.ListAPIView):
@@ -41,23 +42,24 @@ class BookDetailView(generics.RetrieveUpdateAPIView):
 
 
 class CopyView(generics.ListCreateAPIView):
-    # authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication]
     # permission_classes = [IsAuthenticated]
-
     queryset = Copy.objects.all()
     serializer_class = CopySerializer
 
     def perform_create(self, serializer):
-        instance_book = get_object_or_404(Book, pk=self.kwargs.get("id"))
+        print(self.request.data)
+        instance_book = get_object_or_404(Book, pk=self.request.data.get("book_id"))
         serializer.save(book=instance_book)
 
 
 class CopyDetailsView(generics.RetrieveUpdateAPIView):
-    # authentication_classes = [JWTAuthentication]
+    authentication_classes = [JWTAuthentication]
     # permission_classes = [IsAuthenticated]
 
     queryset = Copy.objects.all()
     serializer_class = CopySerializer
+
     
     def notication_student_book_available(book_id, copy_id,students):
         copy = get_object_or_404(Copy, id=copy_id)
@@ -85,4 +87,5 @@ class CopyDetailsView(generics.RetrieveUpdateAPIView):
 #   13h47
 # Isso mesmo
     
+
 

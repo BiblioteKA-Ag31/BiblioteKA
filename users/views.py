@@ -22,7 +22,7 @@ class UserView(generics.CreateAPIView):
 class UserDetailsView(generics.RetrieveAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsCollaborator | ItsOwnAccount]
-
+    serializer_class = UserSerializer
     queryset = User.objects.all()
 
 
@@ -32,10 +32,10 @@ class UserBookView(generics.CreateAPIView):
     serializer_class = UserBookSerializer
 
     def perform_create(self, serializer):
-        user_instance = get_object_or_404(User, pk=self.request.data["user_id"])
-        print(user_instance)
-        book_instance = get_object_or_404(Book, pk=self.request.data["book_id"])
-        serializer.save(user=user_instance, book=book_instance)
+        user = self.request.user
+        book_instance = get_object_or_404(Book, pk=self.kwargs["pk"])
+        serializer.save(user=user, book=book_instance)
+
 
     
 
@@ -49,4 +49,3 @@ class SendEmailView(APIView):
             from_email=settings.EMAIL_HOST_USER,
             fail_silently=False
         )
-        

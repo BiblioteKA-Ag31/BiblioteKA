@@ -1,16 +1,15 @@
 from rest_framework import serializers
-from .models import User, UserBook
+from .models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ["id", "username", "email", "is_superuser", "password", "loans_user"]
-        read_only_fields = ["id"]
+        read_only_fields = ["id", "loans_user"]
         extra_kwargs = {
             "password": {"write_only": True},
             "is_superuser": {"write_only": True},
-            "loans_user": {"read_only": True}
         }
         depth = 1
 
@@ -21,13 +20,31 @@ class UserSerializer(serializers.ModelSerializer):
         )
 
 
-class UserBookSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
-    user_id = serializers.IntegerField()
-    book_id = serializers.IntegerField()
+class UserBookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "email",
+            "username",
+            "books",
+        ]
+        read_only_fields = [
+            "id",
+            "email",
+            "username",
+            "books",
+        ]  # campos que serão necessarios da tabela user.
 
     def create(self, validated_data):
-        return UserBook.objects.create(**validated_data)
+        # import ipdb
+
+        # ipdb.set_trace()
+
+        user = validated_data["user"]
+        book = validated_data["book"]
+        user.books.add(book)
+        return user
 
 
 class SendEmailSerializer(serializers.Serializer):
