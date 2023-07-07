@@ -48,7 +48,6 @@ class CopyView(generics.ListCreateAPIView):
     serializer_class = CopySerializer
 
     def perform_create(self, serializer):
-        print(self.request.data)
         instance_book = get_object_or_404(Book, pk=self.request.data.get("book_id"))
         serializer.save(book=instance_book)
 

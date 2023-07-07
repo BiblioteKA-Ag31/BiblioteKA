@@ -10,7 +10,7 @@ from users.permissions import IsCollaborator
 from django.shortcuts import get_object_or_404
 from .serializers import UserBookSerializer
 from books.models import Book
-from rest_framework.views import APIView
+from rest_framework.views import APIView, Request, Response
 from django.core.mail import send_mail
 from django.conf import settings
 
@@ -40,12 +40,14 @@ class UserBookView(generics.CreateAPIView):
     
 
 class SendEmailView(APIView):
-    def post(self, request):
-        serialize = SendEmailSerializer(data=request.data)
-        serialize.is_valid(raise_exception=True)
+    def post(self, request: Request) -> Response:
+        serializer = SendEmailSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
         send_mail(
-            **serialize.validated_data,
+            **serializer.validated_data,
             from_email=settings.EMAIL_HOST_USER,
             fail_silently=False
         )
+
+        return Response({"msg": "emails enviados"})
