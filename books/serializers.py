@@ -15,8 +15,8 @@ class BookSerializer(serializers.ModelSerializer):
             "quant_copies",
         ]
 
-        def create(self, validated_data):
-            return Book.objects.create(**validated_data)
+    def create(self, validated_data):
+        return Book.objects.create(**validated_data)
 
 
 class BookDetailSerializer(serializers.ModelSerializer):
@@ -44,26 +44,18 @@ class CopySerializer(serializers.ModelSerializer):
             "is_available",
         ]
 
-        def create(self, validated_data):
-            print(validated_data)
-            return Copy.objects.create(**validated_data)
+    def create(self, validated_data):
+        return Copy.objects.create(**validated_data)
 
-        def update(self, instance: Copy, validated_data: dict) -> Copy:
-            copy_avalible = validated_data.pop("is_available", None)
+    def update(self, instance: Copy, validated_data: dict) -> Copy:
+        copy_available = validated_data.pop("is_available", None)
+        setattr(instance, "is_available", copy_available)
+        instance.save()
+        return instance
 
-            if copy_avalible:
-                setattr(instance, "is_available", copy_avalible)
-
-            instance.save()
-
-            return instance
-
-
-# class CopyDetailsSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Copy
-#         fields = [
-#             "id",
-#             "book",
-#             "is_available",
-#         ]
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        if instance.is_available:
+            emails = [item.email for item in instance.book.users.all()]
+            representation["emails"] = emails
+        return representation
