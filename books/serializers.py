@@ -19,20 +19,20 @@ class BookSerializer(serializers.ModelSerializer):
         return Book.objects.create(**validated_data)
 
 
-class BookDetailSerializer(serializers.ModelSerializer):
-    # books = BookSerializer(many=True)
+# class BookDetailSerializer(serializers.ModelSerializer):
+#     # books = BookSerializer(many=True)
 
-    class Meta:
-        model = Book
-        fields = [
-            "id",
-            "title",
-            "availability",
-            "author",
-            "synopsis",
-            "quant_pag",
-            # "books",
-        ]
+#     class Meta:
+#         model = Book
+#         fields = [
+#             "id",
+#             "title",
+#             "availability",
+#             "author",
+#             "synopsis",
+#             "quant_pag",
+#             # "books",
+#         ]
 
 
 class CopySerializer(serializers.ModelSerializer):
@@ -57,5 +57,5 @@ class CopySerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         if instance.is_available:
             emails = [item.email for item in instance.book.users.all()]
-            representation["emails"] = emails
+            representation["users_following"] = emails
         return representation
