@@ -13,7 +13,3 @@ class ItsOwnAccount(permissions.BasePermission):
         if isinstance(obj, User):
             return obj == request.user
         return obj.user == request.user
-
-
-
-
