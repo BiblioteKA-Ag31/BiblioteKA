@@ -34,13 +34,9 @@ class UserBookSerializer(serializers.ModelSerializer):
             "email",
             "username",
             "books",
-        ]  # campos que serão necessarios da tabela user.
+        ]
 
     def create(self, validated_data):
-        # import ipdb
-
-        # ipdb.set_trace()
-
         user = validated_data["user"]
         book = validated_data["book"]
         user.books.add(book)

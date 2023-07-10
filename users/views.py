@@ -1,5 +1,4 @@
 from rest_framework import generics
-from yaml import serialize
 
 from users.permissions import IsCollaborator, ItsOwnAccount
 
@@ -36,8 +35,6 @@ class UserBookView(generics.CreateAPIView):
         book_instance = get_object_or_404(Book, pk=self.kwargs["pk"])
         serializer.save(user=user, book=book_instance)
 
-
-    
 
 class SendEmailView(APIView):
     def post(self, request: Request) -> Response:
