@@ -4,7 +4,7 @@ from rest_framework import generics
 from users.models import User
 from .models import Book, Copy
 
-from .serializers import BookSerializer, BookDetailSerializer, CopySerializer
+from .serializers import BookSerializer, CopySerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from users.permissions import IsCollaborator
@@ -28,22 +28,14 @@ class BookListView(generics.ListAPIView):
 class BookDetailView(generics.RetrieveUpdateAPIView):
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
-
     queryset = Book.objects.all()
-    serializer_class = BookDetailSerializer
-    lookup_url_kwarg = "user_id"
-
-    def get_queryset(self):
-        user = self.kwargs["user_id"]
-        queryset = super().get_queryset()
-        instance_user = get_object_or_404(User, pk=self.kwargs.get("user_id"))
-
-        return queryset.filter(users=instance_user)
+    serializer_class = BookSerializer
+    lookup_url_kwarg = "pk"
 
 
 class CopyView(generics.ListCreateAPIView):
     authentication_classes = [JWTAuthentication]
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsCollaborator]
     queryset = Copy.objects.all()
     serializer_class = CopySerializer
 
@@ -54,7 +46,6 @@ class CopyView(generics.ListCreateAPIView):
 
 class CopyDetailsView(generics.RetrieveUpdateAPIView):
     authentication_classes = [JWTAuthentication]
-    # permission_classes = [IsAuthenticated]
-
+    permission_classes = [IsCollaborator]
     queryset = Copy.objects.all()
     serializer_class = CopySerializer
