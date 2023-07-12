@@ -50,4 +50,4 @@ class SendEmailView(APIView):
             fail_silently=False
         )
 
-        return Response({"msg": "emails enviados"})
+        return Response({"msg": "Emails sent"})
