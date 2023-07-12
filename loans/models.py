@@ -8,7 +8,7 @@ class Loan(models.Model):
     date_exit = models.DateField(auto_now_add=True)
     date_devolution = models.DateField(null=True)
     returned = models.BooleanField(default=False)
-    copies = models.ForeignKey(
+    copy = models.ForeignKey(
         "books.Copy", on_delete=models.CASCADE, related_name="loans_copies"
     )
 
