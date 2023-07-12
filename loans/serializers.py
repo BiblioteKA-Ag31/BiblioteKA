@@ -13,7 +13,7 @@ class LoanSerializer(serializers.ModelSerializer):
             "date_devolution",
             "returned",
             "user",
-            "copies",
+            "copy",
         ]
 
     def validate(self, attrs):
