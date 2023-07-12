@@ -37,6 +37,9 @@ class UserBookView(generics.CreateAPIView):
 
 
 class SendEmailView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsCollaborator]
+
     def post(self, request: Request) -> Response:
         serializer = SendEmailSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)

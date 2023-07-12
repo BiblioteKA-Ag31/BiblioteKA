@@ -7,6 +7,7 @@ from .serializers import BookSerializer, CopySerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from users.permissions import IsCollaborator
+from drf_spectacular.utils import extend_schema
 
 
 class BookView(generics.CreateAPIView):
@@ -31,6 +32,10 @@ class BookDetailView(generics.RetrieveUpdateAPIView):
     serializer_class = BookSerializer
     lookup_url_kwarg = "pk"
 
+    @extend_schema(exclude=True)
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
 
 class CopyView(generics.ListCreateAPIView):
     authentication_classes = [JWTAuthentication]
@@ -48,3 +53,7 @@ class CopyDetailsView(generics.RetrieveUpdateAPIView):
     permission_classes = [IsCollaborator]
     queryset = Copy.objects.all()
     serializer_class = CopySerializer
+
+    @extend_schema(exclude=True)
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)

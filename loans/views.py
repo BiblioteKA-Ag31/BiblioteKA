@@ -4,6 +4,7 @@ from .models import Loan
 from .serializers import LoanSerializer
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from users.permissions import IsCollaborator
+from drf_spectacular.utils import extend_schema
 
 from loans.permissions import HasRented
 from users.models import User
@@ -35,3 +36,7 @@ class LoanDetailView(generics.RetrieveUpdateAPIView):
 
     queryset = Loan.objects.all()
     serializer_class = LoanSerializer
+
+    @extend_schema(exclude=True)
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)

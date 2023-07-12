@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Book, Copy
+from django.forms.models import model_to_dict
 
 
 class BookSerializer(serializers.ModelSerializer):
@@ -12,7 +13,6 @@ class BookSerializer(serializers.ModelSerializer):
             "author",
             "synopsis",
             "quant_pag",
-            "quant_copies",
         ]
 
     def create(self, validated_data):
@@ -20,16 +20,20 @@ class BookSerializer(serializers.ModelSerializer):
 
 
 class CopySerializer(serializers.ModelSerializer):
+    copies = serializers.IntegerField(write_only=True)
+
     class Meta:
         model = Copy
-        fields = [
-            "id",
-            "book_id",
-            "is_available",
-        ]
+        fields = ["id", "book_id", "is_available", "copies"]
+        extra_kwargs = {
+            # "is_available": {"write_only": True},
+        }
 
     def create(self, validated_data):
-        return Copy.objects.create(**validated_data)
+        number_of_copies = validated_data.pop("copies")
+        for copy in range(number_of_copies):
+            created_copy = Copy.objects.create(**validated_data)
+        return created_copy
 
     def update(self, instance: Copy, validated_data: dict) -> Copy:
         copy_available = validated_data.pop("is_available", None)
@@ -42,4 +46,5 @@ class CopySerializer(serializers.ModelSerializer):
         if instance.is_available:
             emails = [item.email for item in instance.book.users.all()]
             representation["users_following"] = emails
+
         return representation

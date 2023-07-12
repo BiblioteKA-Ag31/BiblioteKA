@@ -7,8 +7,7 @@ class Book(models.Model):
     availability = models.BooleanField(default=True)
     author = models.CharField(max_length=50)
     synopsis = models.CharField(max_length=150)
-    quant_pag = models.IntegerField()
-    quant_copies = models.IntegerField()
+    quant_pag = models.PositiveIntegerField()
 
 
 class Copy(models.Model):
